@@ -1,0 +1,21 @@
+$ sudo systemctl start cockpit.socket
+start exit: 0
+
+$ systemctl is-active cockpit.socket
+active
+
+$ systemctl status cockpit.socket --no-pager | head -8
+● cockpit.socket - Cockpit Web Service Socket
+     Loaded: loaded (/usr/lib/systemd/system/cockpit.socket; enabled; preset: enabled)
+     Active: active (listening) since Tue 2026-10-27 03:03:37 UTC; 32ms ago
+   Triggers: ● cockpit.service
+       Docs: man:cockpit-ws(8)
+     Listen: [::]:9090 (Stream)
+    Process: 22645 ExecStartPost=/usr/share/cockpit/motd/update-motd  localhost (code=exited, status=0/SUCCESS)
+    Process: 22655 ExecStartPost=/bin/ln -snf active.motd /run/cockpit/motd (code=exited, status=0/SUCCESS)
+
+$ ss -tlnp | grep 9090
+LISTEN 0      0                  *:9090            *:*    users:(("systemd",pid=1,fd=29))
+
+$ systemctl is-active cockpit.service   (before any connection)
+inactive

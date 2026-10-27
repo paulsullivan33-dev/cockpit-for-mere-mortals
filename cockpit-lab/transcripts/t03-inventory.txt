@@ -1,0 +1,44 @@
+$ dpkg -l | grep ^ii | grep cockpit
+ii  cockpit                              314-1                                   all          Web Console for Linux servers
+ii  cockpit-bridge                       314-1                                   amd64        Cockpit bridge server-side component
+ii  cockpit-networkmanager               314-1                                   all          Cockpit user interface for networking
+ii  cockpit-packagekit                   314-1                                   all          Cockpit user interface for apps and package updates
+ii  cockpit-storaged                     314-1                                   all          Cockpit user interface for storage
+ii  cockpit-system                       314-1                                   all          Cockpit admin interface for a system
+ii  cockpit-ws                           314-1                                   amd64        Cockpit Web Service
+
+$ ls /usr/share/cockpit/
+apps
+base1
+branding
+metrics
+motd
+networkmanager
+packagekit
+shell
+static
+storaged
+systemd
+users
+
+$ ls -la /etc/cockpit/ws-certs.d/
+total 0
+drwxr-xr-x 1 root root  0 Mar 30  2024 .
+drwxr-xr-x 1 root root 72 Oct 27 03:03 ..
+
+$ which cockpit-ws; ls /usr/lib/cockpit/
+cockpit-askpass
+cockpit-certificate-ensure
+cockpit-certificate-helper
+cockpit-client
+cockpit-client.ui
+cockpit-desktop
+cockpit-session
+cockpit-ssh
+cockpit-tls
+cockpit-ws
+
+$ systemctl is-enabled cockpit.socket
+enabled
+$ systemctl is-active cockpit.socket
+inactive

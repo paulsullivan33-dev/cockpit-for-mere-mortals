@@ -1,0 +1,47 @@
+Cockpit for Mere Mortals — the command-line companion
+
+Every Cockpit page is a window onto commands and services that
+were already on the machine. These are the equivalents the
+chapters referred to, collected for the terminal-minded.
+
+Install (Ubuntu and Debian):
+
+    sudo apt update
+    sudo apt install cockpit
+    sudo systemctl enable --now cockpit.socket
+
+Install (Fedora, RHEL, CentOS Stream):
+
+    sudo dnf install cockpit
+    sudo systemctl enable --now cockpit.socket
+    sudo firewall-cmd --permanent --add-service=cockpit
+    sudo firewall-cmd --reload
+
+Is it listening?
+
+    systemctl status cockpit.socket
+    ss -tlnp | grep 9090
+    curl -k https://localhost:9090/
+
+What the pages are, underneath:
+
+    Services page     systemctl, systemctl status <unit>
+    Logs page         journalctl, journalctl -f, journalctl -p err
+    Storage page      lsblk, df -h, udisksctl status
+    Networking page   nmcli, nmcli connection show
+    Accounts page     adduser, passwd, groups (files: /etc/passwd, /etc/shadow)
+    Updates page      apt update && apt upgrade, dnf upgrade
+                      (through PackageKit: pkcon get-updates)
+
+Cockpit's own files:
+
+    /etc/cockpit/                 Cockpit's configuration
+    /etc/cockpit/ws-certs.d/      the certificates it serves
+    /usr/share/cockpit/           one folder per page (add-ons land here too)
+
+The add-ons from chapter 12 (on Ubuntu 24.04, cockpit-files
+needs the backports repository enabled; the other two are in
+the standard set):
+
+    sudo apt install cockpit-podman cockpit-machines
+    sudo apt install cockpit-files

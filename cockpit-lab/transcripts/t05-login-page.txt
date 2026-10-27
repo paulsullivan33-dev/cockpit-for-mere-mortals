@@ -1,0 +1,31 @@
+$ curl -k -sS -o login.html -D - https://localhost:9090/ | head -12
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Security-Policy: connect-src 'self' https://localhost:9090 wss://localhost:9090; form-action 'self' https://localhost:9090; base-uri 'self' https://localhost:9090; object-src 'none'; font-src 'self' https://localhost:9090 data:; img-src 'self' https://localhost:9090 data:; block-all-mixed-content; default-src 'self' https://localhost:9090 'unsafe-inline'
+Set-Cookie: cockpit=deleted; PATH=/; SameSite=strict; Secure; HttpOnly
+Transfer-Encoding: chunked
+Cache-Control: no-cache, no-store
+X-DNS-Prefetch-Control: off
+Referrer-Policy: no-referrer
+X-Content-Type-Options: nosniff
+Cross-Origin-Resource-Policy: same-origin
+X-Frame-Options: sameorigin
+
+
+$ grep -o "<title>[^<]*</title>" login.html
+<title>Loading...</title>
+
+$ systemctl is-active cockpit.service   (after the connection)
+active
+
+$ ls -la /etc/cockpit/ws-certs.d/
+total 8
+drwxr-xr-x 1 root root   70 Oct 27 03:03 .
+drwxr-xr-x 1 root root   72 Oct 27 03:03 ..
+-rw-r--r-- 1 root root 1281 Oct 27 03:03 0-self-signed.cert
+-rw------- 1 root root 1704 Oct 27 03:03 0-self-signed.key
+
+$ openssl x509 -in /etc/cockpit/ws-certs.d/0-self-signed.cert -noout -subject -issuer -fingerprint -sha256 2>/dev/null || openssl x509 -in $(ls /etc/cockpit/ws-certs.d/*.cert | head -1) -noout -subject -issuer -fingerprint -sha256
+subject=O = bb992326d4114fe6bd1e01d3647db247, CN = htch-runtime
+issuer=O = bb992326d4114fe6bd1e01d3647db247, CN = htch-runtime
+sha256 Fingerprint=C6:0E:94:BA:67:9B:31:39:E4:F0:B2:68:30:9F:F6:76:91:AF:DC:0B:25:66:92:B7:15:38:39:E8:5A:D5:61:65

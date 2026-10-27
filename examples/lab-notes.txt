@@ -1,0 +1,31 @@
+Lab notes — Cockpit for Mere Mortals
+
+The lab machine is a 2-CPU, 7.7 GB Ubuntu 24.04 sandbox with
+systemd running as PID 1 — a real, if small, server for the
+duration of the build.
+
+What the lab set out to prove, in order:
+
+1. Cockpit installs from Ubuntu's own packages, at the version
+   the distribution ships — no third-party repository, no
+   download from a website.
+2. After the install, the cockpit.socket unit is the whole
+   story: enabled, listening on port 9090, and starting the web
+   service only when asked (socket activation).
+3. The login page answers on loopback: an HTTPS request to
+   https://localhost:9090/ returns Cockpit's login page, with
+   the self-signed certificate the install generated.
+4. The pieces from chapter 2 are findable on disk: cockpit-ws,
+   the bridge, the page folders under /usr/share/cockpit/, and
+   the certificate under /etc/cockpit/ws-certs.d/.
+
+What the lab did not attempt: driving the interactive web UI.
+A browser session leaves no transcript worth keeping, and the
+guide's rule (criteria point 4) is that clicks are never
+claimed that were not made. The chapters teach the interface
+from the project's documentation and label it as such.
+
+Transcripts live in cockpit-lab/transcripts/, numbered in the
+order they were taken, from the first environment check
+through the install, the on-disk inventory, the socket, and
+the login page answering.
